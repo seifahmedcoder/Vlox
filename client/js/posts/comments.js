@@ -79,7 +79,13 @@ async function renderComments(state = {}, preFetchedResponse = null) {
                 .addClass("fas fa-trash icon-helper")
                 .attr({ role: "button", tabindex: "0" })
                 .on("click", lockEvent(async function () {
-                    Alert.info({ text: "Still working on this feature..." });
+                    const response = await sendRequest({
+                        url: `/api/v1/comments/${safeComment._id}/delete`,
+                        method: "DELETE"
+                    });
+
+                    if (!response.success) return Alert.error({ text: response.error });
+                    Alert.success({ text: "Comment deleted!" });
                 }))
                 .appendTo(buttons);
         }

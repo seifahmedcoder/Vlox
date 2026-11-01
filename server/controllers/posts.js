@@ -6,9 +6,10 @@ import mongoose from "mongoose";
 import {
     changePostVisibilityValidator,
     editPostsValidator,
-    defaultPostFindValidator,
+    getPostValidator,
     commentsValidator,
-    editCommentValidator
+    editCommentValidator,
+    getCommentValidator
 } from "../core/validators.js";
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.put("/posts/:id/visibility", checkAuth, changePostVisibilityValidator, as
     });
 });
 
-router.post("/posts/:id/like", checkAuth, defaultPostFindValidator, async (req, res) => {
+router.post("/posts/:id/like", checkAuth, getPostValidator, async (req, res) => {
     const session = await mongoose.startSession();
     const id = req.cleanData.id;
 
@@ -53,7 +54,7 @@ router.post("/posts/:id/like", checkAuth, defaultPostFindValidator, async (req, 
             session
         });
 
-        if (result.matchedCount === 0) throw new ClientError(errors.POST_ACCESS_DENIED());
+        if (result.matchedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
 
         await schemas.Likes.create([{ by: req.session.userId, for: id }], { session });
     });
@@ -96,13 +97,13 @@ router.put("/posts/:id/update", checkAuth, editPostsValidator, async (req, res) 
     });
 });
 
-router.delete("/posts/:id/delete", checkAuth, defaultPostFindValidator, async function (req, res) {
+router.delete("/posts/:id/delete", checkAuth, getPostValidator, async function (req, res) {
     const session = await mongoose.startSession();
     const id = req.cleanData.id;
 
     await session.withTransaction(async () => {
         const result = await schemas.Posts.deleteOne(postQueries.modify_post(id, req.session.userId), { session });
-        if (result.deletedCount === 0) throw new ClientError(errors.POST_ACCESS_DENIED());
+        if (result.deletedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
 
         await schemas.Likes.deleteMany({ for: id }, { session });
         await schemas.Comments.deleteMany({ for: id }, { session });
@@ -155,6 +156,14 @@ router.put("/comments/:id/update", checkAuth, editCommentValidator, async (req, 
         changed: result.modifiedCount !== 0,
         success: true
     });
+});
+
+router.delete("/comments/:id/delete", checkAuth, getCommentValidator, async function (req, res) {
+    const id = req.cleanData.id;
+    const result = await schemas.Comments.deleteOne({ _id: id, by: req.session.userId });
+    if (result.deletedCount === 0) return res.status(404).json({ error: errors.ACCESS_DENIED("comment") });
+
+    return res.status(200).json({ success: true });
 });
 
 export default router;

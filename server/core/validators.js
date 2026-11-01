@@ -51,12 +51,13 @@ export const createPostsValidator = [...postValidator(), validateResult]
 export const editPostsValidator = [mongoIdParam("id", "Post ID"), ...postValidator(), validateResult]
 export const getPostsValidator = [queryInt("skip", "Skip"), validateResult]
 export const changePostVisibilityValidator = [mongoIdParam("id", "Post ID"), booleanBody("value", "Visibility"), validateResult]
-export const defaultPostFindValidator = [mongoIdParam("id", "Post ID"), validateResult]
+export const getPostValidator = [mongoIdParam("id", "Post ID"), validateResult]
 
 // Comments
 export const commentsValidator = [mongoIdParam("id", "Post ID"), ...commentValidator(), validateResult]
 export const editCommentValidator = [mongoIdParam("id", "Comment ID"), ...commentValidator(), validateResult]
 export const getCommentsValidator = [queryInt("skip", "Skip"), mongoIdParam("id", "Post ID"), validateResult]
+export const getCommentValidator = [mongoIdParam("id", "Comment ID"), validateResult]
 
 // Bookmarks
 export const getBookmarksValidator = [queryInt("skip", "Skip"), validateResult]

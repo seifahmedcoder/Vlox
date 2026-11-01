@@ -5,7 +5,7 @@ import config from "../core/config.js";
 import errors from "../../shared/errors.js";
 import {
     getBookmarksValidator,
-    defaultPostFindValidator,
+    getPostValidator,
     renameBookmarkValidator,
     deleteBookmarkValidator
 } from "../core/validators.js";
@@ -24,7 +24,7 @@ router.post("/bookmarks", checkAuth, getBookmarksValidator, async (req, res) => 
     return res.status(200).json({ success: true, bookmarks });
 });
 
-router.post("/bookmarks/:id", checkAuth, defaultPostFindValidator, async (req, res) => {
+router.post("/bookmarks/:id", checkAuth, getPostValidator, async (req, res) => {
     const id = req.cleanData.id;
     const post = await schemas.Posts.findOne({ _id: id, private: false })
         .select("title")

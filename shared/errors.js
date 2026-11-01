@@ -1,8 +1,8 @@
 const isString = (str) => typeof str === "string" && str.trim();
 const getIntegersError = (fallback, ...nums) => nums?.every(Number.isInteger) ? null : fallback;
-const formatLabel = (template, label) => 
-    (!isString(template) || !isString(label)) 
-        ? "Please check your input and try again." 
+const formatLabel = (template, label) =>
+    (!isString(template) || !isString(label))
+        ? "Please check your input and try again."
         : template.replace("{label}", label.trim());
 
 export const errors = {
@@ -21,7 +21,7 @@ export const errors = {
 
     // Resources
     DUPLICATE_RESOURCE: () => "This resource already exists in the system.",
-    POST_ACCESS_DENIED: () => "You do not have access to this post.",
+    ACCESS_DENIED: (resource) => `You do not have access to this ${isString(resource) ? resource.trim() : "resource"}.`,
     NOT_FOUND: (resource) => `${isString(resource) ? resource.trim() : "Requested item"} not found.`,
 
     // Validation sub-group
@@ -34,20 +34,20 @@ export const errors = {
         INVALID_FORMAT: (label) => formatLabel("Invalid {label} format.", label),
         REQUIRED: (label) => formatLabel("{label} is required.", label),
 
-        MIN_LENGTH: (label, min) => 
-            getIntegersError("Please check your input and try again.", min) ?? 
+        MIN_LENGTH: (label, min) =>
+            getIntegersError("Please check your input and try again.", min) ??
             formatLabel(`{label} must be at least ${min} characters.`, label),
 
-        MAX_LENGTH: (label, max) => 
-            getIntegersError("Please check your input and try again.", max) ?? 
+        MAX_LENGTH: (label, max) =>
+            getIntegersError("Please check your input and try again.", max) ??
             formatLabel(`{label} must not exceed ${max} characters.`, label),
 
-        LENGTH_RANGE: (label, min, max) => 
-            getIntegersError("Please check your input and try again.", min, max) ?? 
+        LENGTH_RANGE: (label, min, max) =>
+            getIntegersError("Please check your input and try again.", min, max) ??
             formatLabel(`{label} must be between ${min} and ${max} characters.`, label),
 
-        EXACT_LENGTH: (label, length) => 
-            getIntegersError("Please check your input and try again.", length) ?? 
+        EXACT_LENGTH: (label, length) =>
+            getIntegersError("Please check your input and try again.", length) ??
             formatLabel(`{label} must be exactly ${length} characters.`, label),
 
         REQUIRED_FIELDS: (...fields) => {
@@ -58,6 +58,6 @@ export const errors = {
             return `${formatter.format(validFields)} can't be empty.`;
         }
     }
-}
+};
 
 export default errors;

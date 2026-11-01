@@ -16,7 +16,7 @@ import {
     postQueries
 } from "./core/utils.js";
 import {
-    defaultPostFindValidator,
+    getPostValidator,
     getPostsValidator,
     createPostsValidator,
     getCommentsValidator
@@ -81,7 +81,7 @@ app.post("/api/v1/posts", checkAuth, createPostsValidator, async (req, res) => {
     return res.status(201).json({ success: true });
 });
 
-app.get("/api/v1/posts/:id", checkAuth, defaultPostFindValidator, async (req, res) => {
+app.get("/api/v1/posts/:id", checkAuth, getPostValidator, async (req, res) => {
     const id = req.cleanData.id;
     const post = await schemas.Posts.findOne({
         ...postQueries.view_post(id, req.session.userId)
