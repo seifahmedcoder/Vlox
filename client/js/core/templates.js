@@ -86,6 +86,6 @@ const templates = {
   </button>
 </div>
 `
-};
+}
 
 export default templates;

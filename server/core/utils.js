@@ -49,7 +49,7 @@ export const postQueries = {
             ]
         }
     }
-};
+}
 
 export function createLimiter(
     windowMs = config.RATE_LIMIT_WINDOW_MS,

@@ -41,15 +41,15 @@ async function renderBookmarks(state = {}, preFetchedResponse = null) {
 
     response.bookmarks.forEach(bookmark => {
         const safeBookmark = bookmark || {}
-        const bookmarkCard = $("<div>").addClass("card").appendTo(fragment);
-        const bookmarkHeader = $("<div>").addClass("space-between").appendTo(bookmarkCard);
-        const buttons = $("<div>").addClass("center-overflow").appendTo(bookmarkCard);
+        const card = $("<div>").addClass("card").appendTo(fragment);
+        const header = $("<div>").addClass("space-between").appendTo(card);
+        const buttons = $("<div>").addClass("center-overflow").appendTo(card);
 
         // Header
         $("<h2>")
             .addClass("overflow")
             .text(capitalizeFirstLetter(safeBookmark.title) || "No title")
-            .appendTo(bookmarkHeader);
+            .appendTo(header);
 
         $("<i>")
             .addClass("fas fa-eye icon-helper")
@@ -64,7 +64,7 @@ async function renderBookmarks(state = {}, preFetchedResponse = null) {
                 renderPosts(response.posts);
                 Alert.success({ text: "Post loaded!" });
             }))
-            .appendTo(bookmarkHeader);
+            .appendTo(header);
 
         // Actions
         $("<button>")

@@ -38,17 +38,17 @@ export async function renderPosts(posts = []) {
     posts.forEach(post => {
         const safePost = post || {};
         const safeBy = safePost.by || {};
-        const postCard = $("<div>").addClass("card").appendTo(fragment);
-        const postHeader = $("<div>").addClass("space-between").appendTo(postCard);
+        const card = $("<div>").addClass("card").appendTo(fragment);
+        const header = $("<div>").addClass("space-between").appendTo(card);
 
         // Header
         $("<h2>")
             .addClass("overflow")
             .text(capitalizeFirstLetter(safePost.title) || "No title found")
-            .appendTo(postHeader);
+            .appendTo(header);
 
-        const postIconsGroup = $("<div>").addClass("center");
-        postHeader.append(postIconsGroup);
+        const icons = $("<div>").addClass("center");
+        header.append(icons);
 
         $("<i>")
             .addClass("fas fa-bookmark post-icon")
@@ -62,7 +62,7 @@ export async function renderPosts(posts = []) {
                 if (!bookmarkResponse.success) return Alert.error({ text: bookmarkResponse.error });
                 Alert.success({ text: "Post bookmarked!" });
             }))
-            .appendTo(postIconsGroup);
+            .appendTo(icons);
 
         $("<i>")
             .addClass("fas fa-link post-icon")
@@ -70,13 +70,13 @@ export async function renderPosts(posts = []) {
             .on("click", async function () {
                 copy(generatePostLink(safePost._id));
             })
-            .appendTo(postIconsGroup);
+            .appendTo(icons);
 
         // Content
         $("<div>")
             .addClass("post-content")
             .html(renderSafeHtml(safePost.content) || "No content found")
-            .appendTo(postCard);
+            .appendTo(card);
 
         // Author
         $("<p>")
@@ -87,11 +87,11 @@ export async function renderPosts(posts = []) {
             .on("click", lockEvent(async function () {
                 await showProfile(safeBy._id);
             }))
-            .appendTo(postCard);
+            .appendTo(card);
 
         // Actions
         const reactions = $("<div>").addClass("reactions-container");
-        postCard.append(reactions);
+        card.append(reactions);
         const likes = Number(safePost.likes) || 0;
 
         $("<button>")

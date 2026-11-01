@@ -39,14 +39,14 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
 
     response.posts.forEach(post => {
         const safePost = post || {};
-        const postCard = $("<div>").addClass("card").appendTo(fragment);
-        const postHeader = $("<div>").addClass("space-between").appendTo(postCard);
+        const card = $("<div>").addClass("card").appendTo(fragment);
+        const header = $("<div>").addClass("space-between").appendTo(card);
 
         // Header
         $("<h2>")
             .addClass("overflow")
             .text(capitalizeFirstLetter(safePost.title) || "Untitled post")
-            .appendTo(postHeader);
+            .appendTo(header);
 
         $("<i>")
             .addClass("fas fa-link post-icon")
@@ -54,23 +54,23 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
             .on("click", async function () {
                 copy(generatePostLink(safePost._id));
             })
-            .appendTo(postHeader);
+            .appendTo(header);
 
         // Content
         $("<div>")
             .addClass("post-content")
             .html(renderSafeHtml(safePost.content) || "Not content found")
-            .appendTo(postCard);
+            .appendTo(card);
 
         // Actions
         if (state.user.isLoggedInUser) {
             $("<small>")
                 .css("color", "dimgray")
                 .html(`(Private): <span style='color: ${safePost.private ? "green" : "red"}'>${safePost.private ? "Yes" : "No"}</span>`)
-                .appendTo(postCard);
+                .appendTo(card);
 
-            const buttonsContainer = $("<div>").addClass("center-overflow");
-            postCard.append(buttonsContainer);
+            const buttons = $("<div>").addClass("center-overflow");
+            card.append(buttons);
 
             $("<button>")
                 .addClass("btn-danger w-full")
@@ -84,7 +84,7 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
                     if (!response.success) return Alert.error({ text: response.error });
                     Alert.success({ text: "Post deleted!" });
                 }))
-                .appendTo(buttonsContainer);
+                .appendTo(buttons);
 
             $("<button>")
                 .addClass("w-full")
@@ -106,7 +106,7 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
                     
                     Alert.success({ text: "Post updated!" });
                 }))
-                .appendTo(buttonsContainer);
+                .appendTo(buttons);
 
             $("<button>")
                 .addClass("w-full")
@@ -123,7 +123,7 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
 
                     Alert.success({ text: `Post visibility set as ${safePost.private ? "public" : "private"}!` });
                 }))
-                .appendTo(buttonsContainer);
+                .appendTo(buttons);
         }
     });
 
