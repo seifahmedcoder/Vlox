@@ -38,17 +38,19 @@ async function renderComments(state = {}, preFetchedResponse = null) {
     response.comments.forEach(comment => {
         const safeComment = comment || {};
         const safeBy = safeComment.by || {};
-        const commentsCard = $("<div>").addClass("card").appendTo(fragment);
+        const card = $("<div>").addClass("card").appendTo(fragment);
 
         // Header
-        const commentsHeader = $("<div>").addClass("space-between").appendTo(commentsCard);
+        const header = $("<div>").addClass("space-between").appendTo(card);
 
         $("<h3>")
             .addClass("overflow")
             .text(capitalizeFirstLetter(safeBy.username) || "User")
-            .appendTo(commentsHeader);
+            .appendTo(header);
 
         if (safeBy?._id && safeBy._id === quickInfo?._id) {
+            const buttons = $("<div>").addClass("center").appendTo(header);
+
             $("<i>")
                 .addClass("fas fa-pen-to-square icon-helper")
                 .attr({ role: "button", tabindex: "0" })
@@ -71,20 +73,28 @@ async function renderComments(state = {}, preFetchedResponse = null) {
 
                     Alert.success({ text: "Comment updated!" });
                 }))
-                .appendTo(commentsHeader);
+                .appendTo(buttons);
+
+            $("<i>")
+                .addClass("fas fa-trash icon-helper")
+                .attr({ role: "button", tabindex: "0" })
+                .on("click", lockEvent(async function () {
+                    Alert.info({ text: "Still working on this feature..." });
+                }))
+                .appendTo(buttons);
         }
 
         /// Content
         $("<p>")
             .text(safeComment.content || "No content found")
-            .appendTo(commentsCard);
+            .appendTo(card);
 
         // Edited badge
         if (safeComment.editedAt) {
             $("<small>")
                 .text("(Edited)")
                 .css("color", "gray")
-                .appendTo(commentsCard);
+                .appendTo(card);
         }
     });
 
