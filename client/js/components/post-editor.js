@@ -1,4 +1,4 @@
-import { config, $ } from "../core/utils.js"
+import { config, $, Swal, validator } from "../core/utils.js";
 import templates from "../core/templates.js";
 import errors from "/shared/errors.js";
 

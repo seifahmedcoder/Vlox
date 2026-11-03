@@ -12,7 +12,9 @@ import {
     config,
     quickInfo,
     $,
-    Alert
+    Alert,
+    saveAs,
+    Swal
 } from "../core/utils.js";
 
 const signUpBtn = $("#signup-btn");
@@ -101,7 +103,7 @@ async function showSignUpModal() {
     // Download recovery codes
     if (Array.isArray(response.recoveryCodes)) {
         const blob = new Blob([response.recoveryCodes.join("\n")], { type: "text/plain" });
-        window.saveAs(blob, "recovery-codes.txt");
+        saveAs(blob, "recovery-codes.txt");
     }
 
     await handleAuthSuccess("Account created successfully!");

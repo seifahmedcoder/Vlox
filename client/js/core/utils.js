@@ -1,4 +1,10 @@
 import $ from "https://cdn.jsdelivr.net/npm/cash-dom@8.1.0/dist/cash.esm.js";
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+import { marked } from "https://cdn.jsdelivr.net/npm/marked@15.0.0/+esm";
+import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.4.8/+esm";
+import axios from "https://cdn.jsdelivr.net/npm/axios@1.20.0/+esm";
+import saveAs from "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/+esm";
+import validator from "https://cdn.jsdelivr.net/npm/validator@13.15.35/+esm";
 import config from "/shared/config.js";
 import errors from "/shared/errors.js";
 
@@ -49,7 +55,8 @@ export async function sendRequest({ body, ...requestConfig }) {
         const response = await axios({
             ...requestConfig,
             validateStatus: status => status >= 200 && status < 500,
-            data: body
+            data: body,
+            credentials: "include"
         });
 
         return response?.data || {};
@@ -103,4 +110,4 @@ export const Alert = {
     info: (config = {}) => BaseToast.fire({ icon: "info", title: "Info", ...config })
 }
 
-export { $, config };
+export { $, config, saveAs, Swal, validator };

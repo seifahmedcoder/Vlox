@@ -10,7 +10,9 @@ import {
     quickInfo,
     input,
     $,
-    Alert
+    Alert,
+    Swal,
+    validator
 } from "../core/utils.js";
 
 export default async function showProfile(id) {

@@ -4,7 +4,8 @@ import {
     initQuickInfo,
     Alert,
     sendRequest,
-    $
+    $,
+    validator
 } from "../core/utils.js";
 
 const loggedInGroup = $("#auth-buttons");

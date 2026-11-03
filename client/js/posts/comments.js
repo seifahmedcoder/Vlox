@@ -7,7 +7,8 @@ import {
     config,
     quickInfo,
     $,
-    Alert
+    Alert,
+    Swal
 } from "../core/utils.js";
 
 async function getComments(state = {}) {
