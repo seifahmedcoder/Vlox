@@ -1,4 +1,4 @@
-import { config, Swal, validator } from "../core/utils.js";
+import { config, Swal, validator } from "../utils.js";
 import errors from "/shared/errors.js";
 
 export default class CommentEditor {

@@ -61,4 +61,4 @@ export default {
     Posts: mongoose.model("Posts", postsSchema, "posts"),
     Bookmarks: mongoose.model("Bookmarks", bookmarksSchema, "bookmarks"),
     Comments: mongoose.model("Comments", commentsSchema, "comments")
-};
+}

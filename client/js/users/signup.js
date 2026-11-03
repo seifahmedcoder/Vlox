@@ -1,5 +1,5 @@
 import showProfile from "./profile.js";
-import templates from "../core/templates.js";
+import templates from "../templates.js";
 import {
     getLoginError,
     getSignUpError,
@@ -15,7 +15,7 @@ import {
     Alert,
     saveAs,
     Swal
-} from "../core/utils.js";
+} from "../utils.js";
 
 const signUpBtn = $("#signup-btn");
 const signOutBtn = $("#signout-btn");

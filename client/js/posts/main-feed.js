@@ -1,6 +1,6 @@
 import showProfile from "../users/profile.js";
 import showComments from "./comments.js";
-import CommentEditor from "../components/comment-editor.js";
+import CommentEditor from "./comment-editor.js";
 import {
     sendRequest,
     capitalizeFirstLetter,
@@ -10,7 +10,7 @@ import {
     copy,
     $,
     Alert
-} from "../core/utils.js";
+} from "../utils.js";
 
 const query = new URLSearchParams(window.location.search);
 
@@ -83,7 +83,7 @@ export async function renderPosts(posts = []) {
             .css({ color: "red", cursor: "pointer" })
             .attr("role", "button")
             .attr("tabindex", "0")
-            .html(`Created by: <span class="author-name">${capitalizeFirstLetter(safeBy.username) || "User"}</span>`)
+            .text(`Created by: ${capitalizeFirstLetter(safeBy.username) || "Someone"}`)
             .on("click", lockEvent(async function () {
                 await showProfile(safeBy._id);
             }))

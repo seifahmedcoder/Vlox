@@ -20,10 +20,10 @@ router.put("/posts/:id/visibility", checkAuth, changePostVisibilityValidator, as
         {
             $set: {
                 private: {
-                    $cond: [{ $eq: ["$private", value] }, "$private", value]
+                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$private", { $literal: value }]
                 },
                 updatedAt: {
-                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", "$$NOW"]
+                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$updatedAt", "$$NOW"]
                 }
             }
         }
@@ -69,14 +69,14 @@ router.put("/posts/:id/update", checkAuth, editPostsValidator, async (req, res) 
         {
             $set: {
                 title: {
-                    $cond: [{ $eq: ["$title", title] }, "$title", title]
+                    $cond: [{ $eq: ["$title", { $literal: title }] }, "$title", { $literal: title }]
                 },
                 content: {
-                    $cond: [{ $eq: ["$content", content] }, "$content", content]
+                    $cond: [{ $eq: ["$content", { $literal: content }] }, "$content", { $literal: content }]
                 },
                 updatedAt: {
                     $cond: [
-                        { $and: [{ $eq: ["$title", title] }, { $eq: ["$content", content] }] },
+                        { $and: [{ $eq: ["$title", { $literal: title }] }, { $eq: ["$content", { $literal: content }] }] },
                         "$updatedAt",
                         "$$NOW"
                     ]
@@ -99,15 +99,20 @@ router.delete("/posts/:id/delete", checkAuth, getPostValidator, async function (
     const session = await mongoose.startSession();
     const id = req.cleanData.id;
 
-    await session.withTransaction(async () => {
-        const result = await schemas.Posts.deleteOne(postQueries.modify_post(id, req.session.userId), { session });
-        if (result.deletedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
+    try {
+        await session.withTransaction(async () => {
+            const result = await schemas.Posts.deleteOne(postQueries.modify_post(id, req.session.userId), { session });
+            if (result.deletedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
 
-        await schemas.Likes.deleteMany({ for: id }, { session });
-        await schemas.Comments.deleteMany({ for: id }, { session });
-    });
+            // Not bad for small scale ;)
+            await schemas.Likes.deleteMany({ for: id }, { session });
+            await schemas.Comments.deleteMany({ for: id }, { session });
+            await schemas.Bookmarks.deleteMany({ for: id }, { session });
+        });
+    } finally {
+        await session.endSession();
+    }
 
-    await session.endSession();
     return res.status(200).json({ success: true });
 });
 
@@ -131,15 +136,15 @@ router.put("/comments/:id/update", checkAuth, editCommentValidator, async (req, 
             {
                 $set: {
                     content: {
-                        $cond: [{ $eq: ["$content", content] }, "$content", content]
+                        $cond: [{ $eq: ["$content", { $literal: content }] }, "$content", { $literal: content }]
                     },
 
                     editedAt: {
-                        $cond: [{ $eq: ["$content", content] }, "$editedAt", "$$NOW"]
+                        $cond: [{ $eq: ["$content", { $literal: content }] }, "$editedAt", "$$NOW"]
                     },
 
                     updatedAt: {
-                        $cond: [{ $eq: ["$content", content] }, "$updatedAt", "$$NOW"]
+                        $cond: [{ $eq: ["$content", { $literal: content }] }, "$updatedAt", "$$NOW"]
                     }
                 }
             }

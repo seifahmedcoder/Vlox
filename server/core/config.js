@@ -1,5 +1,11 @@
 import "dotenv/config";
+import validator from "validator";
 import sharedConfig from "../../shared/config.js";
+
+const { MONGO_URI, SESSION_SECRET, PORT = "3000", PRODUCTION } = process.env;
+
+if (!validator.isPort(PORT)) throw new Error(`Config Error: "${PORT}" is not a valid network port number.`);
+if (!MONGO_URI || !SESSION_SECRET) throw new Error("Config Error: MONGO_URI and SESSION_SECRET must be set in .env file.");
 
 const config = {
     ...sharedConfig,
@@ -19,11 +25,11 @@ const config = {
     RECOVERY_CODE_RANDOM_BYTES: 10,
     BCRYPT_SALT_ROUNDS: 10,
 
-    // Environment values
-    MONGO_URI: process.env.MONGO_URI,
-    SESSION_SECRET: process.env.SESSION_SECRET,
-    PORT: process.env.PORT,
-    PRODUCTION: process.env.NODE_ENV === "production"
-}
+    // Env values
+    MONGO_URI: MONGO_URI,
+    SESSION_SECRET: SESSION_SECRET,
+    PORT: parseInt(PORT),
+    PRODUCTION:  PRODUCTION === "production"
+};
 
 export default config;

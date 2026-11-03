@@ -105,11 +105,11 @@ router.put("/me/visibility", checkAuth, updateUserVisibilityValidator, async (re
         {
             $set: {
                 private: {
-                    $cond: [{ $eq: ["$private", value] }, "$private", value]
+                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$private", { $literal: value }]
                 },
 
                 updatedAt: {
-                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", "$$NOW"]
+                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$updatedAt", "$$NOW"]
                 }
             }
         }
@@ -134,10 +134,10 @@ router.put("/me/bio", checkAuth, updateUserBioValidator, async (req, res) => {
         {
             $set: {
                 bio: {
-                    $cond: [{ $eq: ["$bio", bio] }, "$bio", bio]
+                    $cond: [{ $eq: ["$bio", { $literal: bio }] }, "$bio", { $literal: bio }]
                 },
                 updatedAt: {
-                    $cond: [{ $eq: ["$bio", bio] }, "$updatedAt", "$$NOW"]
+                    $cond: [{ $eq: ["$bio", { $literal: bio }] }, "$updatedAt", "$$NOW"]
                 }
             }
         }

@@ -1,3 +1,4 @@
+// This is a quick prototype guys. Working on a better error handling system for the future :)
 const isString = (str) => typeof str === "string" && str.trim();
 const getIntegersError = (fallback, ...nums) => nums?.every(Number.isInteger) ? null : fallback;
 const formatLabel = (template, label) =>

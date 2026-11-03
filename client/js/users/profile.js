@@ -1,5 +1,5 @@
 import showBookmarks from "../posts/bookmarks.js";
-import templates from "../core/templates.js";
+import templates from "../templates.js";
 import { renderProfilePosts } from "./profile-feed.js";
 import errors from "/shared/errors.js";
 import {
@@ -13,7 +13,7 @@ import {
     Alert,
     Swal,
     validator
-} from "../core/utils.js";
+} from "../utils.js";
 
 export default async function showProfile(id) {
     const response = await sendRequest({

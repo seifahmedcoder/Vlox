@@ -6,7 +6,7 @@ import {
     sendRequest,
     $,
     validator
-} from "../core/utils.js";
+} from "../utils.js";
 
 const loggedInGroup = $("#auth-buttons");
 const signUpBtn = $("#signup-btn");
@@ -23,11 +23,11 @@ function validateUsername(username) {
 }
 
 function validatePassword(password) {
-    const PASSWORD_MAX_LENGTH = config.PASSWORD_MAX_LENGTH;
+    const { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } = config;
 
     if (validator.isEmpty(password)) return errors.VALIDATION.REQUIRED("Password");
-    if (!validator.isLength(password, { max: PASSWORD_MAX_LENGTH })) {
-        return errors.VALIDATION.MAX_LENGTH("Password", PASSWORD_MAX_LENGTH);
+    if (!validator.isLength(password, { max: PASSWORD_MAX_LENGTH, min: PASSWORD_MIN_LENGTH })) {
+        return errors.VALIDATION.LENGTH_RANGE("Password", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
     }
 
     return null;

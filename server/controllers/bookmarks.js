@@ -51,11 +51,11 @@ router.put("/bookmarks/:id/rename", checkAuth, renameBookmarkValidator, async (r
         {
             $set: {
                 title: {
-                    $cond: [{ $eq: ["$title", title] }, "$title", title]
+                    $cond: [{ $eq: ["$title", { $literal: title }] }, "$title", { $literal: title }]
                 },
 
                 updatedAt: {
-                    $cond: [{ $eq: ["$title", title] }, "$updatedAt", "$$NOW"]
+                    $cond: [{ $eq: ["$title", { $literal: title }] }, "$updatedAt", "$$NOW"]
                 }
             }
         }

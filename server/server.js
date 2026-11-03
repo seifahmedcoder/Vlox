@@ -1,10 +1,9 @@
-import "express-async-errors";
+import config from "./core/config.js";
 import express from "express";
 import path from "path";
 import session from "express-session";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
-import config from "./core/config.js";
 import errors from "../shared/errors.js";
 import schemas from "./core/schemas.js";
 import bookmarksRouter from "./controllers/bookmarks.js";
@@ -25,7 +24,7 @@ import {
 const __dirname = import.meta.dirname;
 const app = express();
 
-// MonogDB
+// MongoDB
 mongoose.connect(config.MONGO_URI)
     .then(() => console.log("MongoDB connected!"))
     .catch(err => console.error(err.message));
@@ -120,7 +119,8 @@ app.get("/api/v1/posts/:id/comments", checkAuth, getCommentsValidator, async (re
 });
 
 app.use((req, res) => {
-    res.status(404).send("<h1>404 - Route not found.</h1>");
+    // Return a simple JSON response for simplicity :)
+    res.status(404).json({ error: errors.NOT_FOUND("Route") });
 });
 
 app.use((err, req, res, next) => {

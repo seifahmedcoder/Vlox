@@ -1,4 +1,4 @@
-import PostEditor from "../components/post-editor.js";
+import PostEditor from "../posts/post-editor.js";
 import {
     copy,
     renderSafeHtml,
@@ -8,7 +8,7 @@ import {
     capitalizeFirstLetter,
     lockEvent,
     Alert
-} from "../core/utils.js";
+} from "../utils.js";
 
 export async function getProfilePosts(userId, skip) {
     const response = await sendRequest({

@@ -26,24 +26,34 @@ const mongoIdParam = (field, label) => param(field)
 // Domain-specific validators
 const userValidator = () => [
     ...baseTextBody("username", "Username"),
-    body("username").isLength({ min: config.USERNAME_MIN_LENGTH, max: config.USERNAME_MAX_LENGTH }).withMessage(errors.VALIDATION.LENGTH_RANGE("Username", config.USERNAME_MIN_LENGTH, config.USERNAME_MAX_LENGTH)),
+    body("username")
+        .isLength({ min: config.USERNAME_MIN_LENGTH, max: config.USERNAME_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.LENGTH_RANGE("Username", config.USERNAME_MIN_LENGTH, config.USERNAME_MAX_LENGTH)),
     body("username").toLowerCase(),
 
     ...baseTextBody("password", "Password"),
-    body("password").isLength({ max: config.PASSWORD_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Password", config.PASSWORD_MAX_LENGTH))
+    body("password")
+        .isLength({ max: config.PASSWORD_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Password", config.PASSWORD_MAX_LENGTH))
 ]
 
 const postValidator = () => [
     ...baseTextBody("title", "Post title"),
-    body("title").isLength({ max: config.POST_TITLE_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Post title", config.POST_TITLE_MAX_LENGTH)),
+    body("title")
+        .isLength({ max: config.POST_TITLE_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Post title", config.POST_TITLE_MAX_LENGTH)),
 
     ...baseTextBody("content", "Post content"),
-    body("content").isLength({ max: config.POST_CONTENT_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Post content", config.POST_CONTENT_MAX_LENGTH))
+    body("content")
+        .isLength({ max: config.POST_CONTENT_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Post content", config.POST_CONTENT_MAX_LENGTH))
 ]
 
 const commentValidator = () => [
     ...baseTextBody("content", "Content"),
-    body("content").isLength({ max: config.COMMENTS_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Content", config.COMMENTS_MAX_LENGTH))
+    body("content")
+        .isLength({ max: config.COMMENTS_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Content", config.COMMENTS_MAX_LENGTH))
 ]
 
 // Posts
@@ -65,7 +75,9 @@ export const deleteBookmarkValidator = [mongoIdParam("id", "Bookmark ID"), valid
 export const renameBookmarkValidator = [
     mongoIdParam("id", "Bookmark ID"),
     ...baseTextBody("title", "Bookmark title"),
-    body("title").isLength({ max: config.POST_TITLE_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Bookmark title", config.POST_TITLE_MAX_LENGTH)),
+    body("title")
+        .isLength({ max: config.POST_TITLE_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Bookmark title", config.POST_TITLE_MAX_LENGTH)),
     validateResult
 ]
 
@@ -77,20 +89,31 @@ export const updateUserVisibilityValidator = [booleanBody("value", "Visibility")
 
 export const signupValidator = [
     ...userValidator(),
+    body("password")
+        .isLength({ min: config.PASSWORD_MIN_LENGTH })
+        .withMessage(errors.VALIDATION.MIN_LENGTH("Password", config.PASSWORD_MIN_LENGTH)),
+
     ...baseTextBody("bio", "Bio"),
-    body("bio").isLength({ min: config.BIO_MIN_LENGTH, max: config.BIO_MAX_LENGTH }).withMessage(errors.VALIDATION.LENGTH_RANGE("Bio", config.BIO_MIN_LENGTH, config.BIO_MAX_LENGTH)),
+    body("bio")
+        .isLength({ min: config.BIO_MIN_LENGTH, max: config.BIO_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.LENGTH_RANGE("Bio", config.BIO_MIN_LENGTH, config.BIO_MAX_LENGTH)),
 
     ...baseTextBody("email", "Email"),
-    body("email").isLength({ max: config.EMAIL_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Email", config.EMAIL_MAX_LENGTH)),
-    body("email").isEmail().withMessage(errors.VALIDATION.INVALID_FORMAT("Email")),
+
+    body("email")
+        .isLength({ max: config.EMAIL_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.MAX_LENGTH("Email", config.EMAIL_MAX_LENGTH)),
+    body("email")
+        .isEmail()
+        .withMessage(errors.VALIDATION.INVALID_FORMAT("Email")),
     body("email").normalizeEmail(),
     validateResult
 ]
 
 export const updateUserBioValidator = [
-    body("bio").optional({ values: "falsy" }),
-    body("bio").isString().withMessage(errors.VALIDATION.STRING("Bio")),
-    body("bio").isLength({ max: config.BIO_MAX_LENGTH }).withMessage(errors.VALIDATION.MAX_LENGTH("Bio", config.BIO_MAX_LENGTH)),
-    body("bio").trim(),
+    ...baseTextBody("bio", "Bio"),
+    body("bio")
+        .isLength({ min: config.BIO_MIN_LENGTH, max: config.BIO_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.LENGTH_RANGE("Bio", config.BIO_MIN_LENGTH, config.BIO_MAX_LENGTH)),
     validateResult
 ]

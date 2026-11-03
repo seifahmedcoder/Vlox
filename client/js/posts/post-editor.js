@@ -1,5 +1,5 @@
-import { config, $, Swal, validator } from "../core/utils.js";
-import templates from "../core/templates.js";
+import { config, $, Swal, validator } from "../utils.js";
+import templates from "../templates.js";
 import errors from "/shared/errors.js";
 
 export default class PostEditor {
