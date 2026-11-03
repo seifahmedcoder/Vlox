@@ -32,7 +32,7 @@ mongoose.connect(config.MONGO_URI)
 
 // Basic config
 app.use(express.static(path.join(__dirname, "..", "client"), { index: false }));
-app.use("/shared", express.static(path.join(__dirname, "..", "shared"), { index: false }));
+app.use("/shared", express.static(path.join(__dirname, "..", "shared")));
 app.use(express.json({ limit: config.JSON_BODY_LIMIT }));
 app.use(
     session({
@@ -50,7 +50,7 @@ app.use(
             sameSite: "lax"
         }
     })
-)
+);
 
 const mainLimiter = createLimiter(config.RATE_LIMIT_WINDOW_MS, config.MAIN_RATE_LIMIT_MAX_REQ, {
     skip: (req) => ["/api/v1/users/password", "/api/v1/users/recovery-codes"].some((path) => req.originalUrl.includes(path))

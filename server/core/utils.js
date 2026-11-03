@@ -29,7 +29,7 @@ export async function generateRecoveryCodes(count = config.RECOVERY_CODE_COUNT) 
     return {
         hashed: recoveryCodesHashed,
         raw: recoveryCodesRaw
-    };
+    }
 }
 
 export const postQueries = {
@@ -79,7 +79,6 @@ export function validateResult(req, res, next) {
     const result = validationResult(req);
     if (!result.isEmpty()) return res.status(400).json({ error: result.array()[0].msg });
 
-    // Result
     const cleanData = matchedData(req);
     req.cleanData = cleanData;
     next();

@@ -15,7 +15,6 @@ const router = express.Router();
 
 router.put("/posts/:id/visibility", checkAuth, changePostVisibilityValidator, async (req, res) => {
     const { id, value } = req.cleanData;
-    const now = new Date();
 
     const result = await schemas.Posts.updateOne(postQueries.modify_post(id, req.session.userId), [
         {
@@ -24,7 +23,7 @@ router.put("/posts/:id/visibility", checkAuth, changePostVisibilityValidator, as
                     $cond: [{ $eq: ["$private", value] }, "$private", value]
                 },
                 updatedAt: {
-                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", now]
+                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", "$$NOW"]
                 }
             }
         }
@@ -65,7 +64,6 @@ router.post("/posts/:id/like", checkAuth, getPostValidator, async (req, res) => 
 
 router.put("/posts/:id/update", checkAuth, editPostsValidator, async (req, res) => {
     const { content, title, id } = req.cleanData;
-    const now = new Date();
 
     const result = await schemas.Posts.updateOne(postQueries.modify_post(id, req.session.userId), [
         {
@@ -80,7 +78,7 @@ router.put("/posts/:id/update", checkAuth, editPostsValidator, async (req, res) 
                     $cond: [
                         { $and: [{ $eq: ["$title", title] }, { $eq: ["$content", content] }] },
                         "$updatedAt",
-                        now
+                        "$$NOW"
                     ]
                 }
             }
@@ -124,7 +122,6 @@ router.post("/posts/:id/comments", checkAuth, commentsValidator, async (req, res
 
 router.put("/comments/:id/update", checkAuth, editCommentValidator, async (req, res) => {
     const { id, content } = req.cleanData;
-    const now = new Date();
 
     const result = await schemas.Comments.updateOne({
         _id: id,
@@ -138,11 +135,11 @@ router.put("/comments/:id/update", checkAuth, editCommentValidator, async (req, 
                     },
 
                     editedAt: {
-                        $cond: [{ $eq: ["$content", content] }, "$editedAt", now]
+                        $cond: [{ $eq: ["$content", content] }, "$editedAt", "$$NOW"]
                     },
 
                     updatedAt: {
-                        $cond: [{ $eq: ["$content", content] }, "$updatedAt", now]
+                        $cond: [{ $eq: ["$content", content] }, "$updatedAt", "$$NOW"]
                     }
                 }
             }

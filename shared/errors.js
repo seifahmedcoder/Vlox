@@ -58,6 +58,6 @@ export const errors = {
             return `${formatter.format(validFields)} can't be empty.`;
         }
     }
-};
+}
 
 export default errors;

@@ -98,7 +98,6 @@ router.get("/users/:id/posts", checkAuth, getUserPostsValidator, async function 
 
 router.put("/me/visibility", checkAuth, updateUserVisibilityValidator, async (req, res) => {
     const value = req.cleanData.value;
-    const now = new Date();
 
     const result = await schemas.Users.updateOne({
         _id: req.session.userId
@@ -110,7 +109,7 @@ router.put("/me/visibility", checkAuth, updateUserVisibilityValidator, async (re
                 },
 
                 updatedAt: {
-                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", now]
+                    $cond: [{ $eq: ["$private", value] }, "$updatedAt", "$$NOW"]
                 }
             }
         }
@@ -128,7 +127,6 @@ router.put("/me/visibility", checkAuth, updateUserVisibilityValidator, async (re
 
 router.put("/me/bio", checkAuth, updateUserBioValidator, async (req, res) => {
     const bio = req.cleanData.bio;
-    const now = new Date();
 
     const result = await schemas.Users.updateOne({
         _id: req.session.userId
@@ -139,7 +137,7 @@ router.put("/me/bio", checkAuth, updateUserBioValidator, async (req, res) => {
                     $cond: [{ $eq: ["$bio", bio] }, "$bio", bio]
                 },
                 updatedAt: {
-                    $cond: [{ $eq: ["$bio", bio] }, "$updatedAt", now]
+                    $cond: [{ $eq: ["$bio", bio] }, "$updatedAt", "$$NOW"]
                 }
             }
         }

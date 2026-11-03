@@ -43,7 +43,6 @@ router.post("/bookmarks/:id", checkAuth, getPostValidator, async (req, res) => {
 
 router.put("/bookmarks/:id/rename", checkAuth, renameBookmarkValidator, async (req, res) => {
     const { id, title } = req.cleanData;
-    const now = new Date();
 
     const result = await schemas.Bookmarks.updateOne({
         _id: id,
@@ -56,7 +55,7 @@ router.put("/bookmarks/:id/rename", checkAuth, renameBookmarkValidator, async (r
                 },
 
                 updatedAt: {
-                    $cond: [{ $eq: ["$title", title] }, "$updatedAt", now]
+                    $cond: [{ $eq: ["$title", title] }, "$updatedAt", "$$NOW"]
                 }
             }
         }
