@@ -1,5 +1,5 @@
-import { config, Swal, validator } from "../utils.js";
-import errors from "/shared/errors.js";
+import { config, Swal, validator } from "@vlox/utils.js";
+import errors from "@shared/errors.js";
 
 export default class CommentEditor {
     #instance;

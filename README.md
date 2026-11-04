@@ -35,11 +35,12 @@ Thanks to this architecture, the frontend is finally at a point where I can easi
 
 ### Internationalization
 
-I'm still working on adding i18next and support for different languages. And the current error-handling implementation is not complete; it's just a quick prototype and will change as I continue working on it.
+I'm still working on adding support for different languages. The current error-handling implementation is not complete; it's just a quick prototype and will change as I continue working on it, too.
 
 ## Live Demo
 
-If you have some time, please consider trying trying [Vlox](https://vlox.containers.snapdeploy.app). I really appreciate feedback from cool developer like you :)
+If you have some time, please consider trying trying [Vlox](https://vlox-social-platform.abasthan.app). I really appreciate feedback from cool developer like you :)
 
+And so, if you agree with the idea, please keep in mind that it's still a work in progress! Features like proper error handling, password recovery, and the 'unlike' button aren't finished yet. Go easy on me!
 
 *Please drop a 🌟! This means the 🌎 to me.*

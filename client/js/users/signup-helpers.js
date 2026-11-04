@@ -1,12 +1,12 @@
-import config from "/shared/config.js";
-import errors from "/shared/errors.js";
+import config from "@shared/config.js";
+import errors from "@shared/errors.js";
 import {
     initQuickInfo,
     Alert,
     sendRequest,
     $,
     validator
-} from "../utils.js";
+} from "@vlox/utils.js";
 
 const loggedInGroup = $("#auth-buttons");
 const signUpBtn = $("#signup-btn");

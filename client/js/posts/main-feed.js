@@ -1,6 +1,6 @@
-import showProfile from "../users/profile.js";
-import showComments from "./comments.js";
-import CommentEditor from "./comment-editor.js";
+import showProfile from "@vlox/users/profile.js";
+import showComments from "@vlox/posts/comments.js";
+import CommentEditor from "@vlox/posts/comment-editor.js";
 import {
     sendRequest,
     capitalizeFirstLetter,
@@ -10,7 +10,7 @@ import {
     copy,
     $,
     Alert
-} from "../utils.js";
+} from "@vlox/utils.js";
 
 const query = new URLSearchParams(window.location.search);
 

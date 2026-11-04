@@ -1,11 +1,11 @@
-import showProfile from "./profile.js";
-import templates from "../templates.js";
+import showProfile from "@vlox/users/profile.js";
+import templates from "@vlox/templates.js";
 import {
     getLoginError,
     getSignUpError,
     toggleAuthButtons,
     handleAuthSuccess
-} from "./signup-helpers.js";
+} from "@vlox/users/signup-helpers.js";
 import {
     sendRequest,
     lockEvent,
@@ -15,7 +15,7 @@ import {
     Alert,
     saveAs,
     Swal
-} from "../utils.js";
+} from "@vlox/utils.js";
 
 const signUpBtn = $("#signup-btn");
 const signOutBtn = $("#signout-btn");

@@ -1,5 +1,6 @@
-import { renderSafeHtml } from "./utils.js";
+import { renderSafeHtml } from "@vlox/utils.js";
 
+// Not bad for small scale ¯\_(ツ)_/¯
 const templates = {
   POST_EDITOR: () => `
 <input id="post-editor-title" type="text" placeholder="Enter post title...">

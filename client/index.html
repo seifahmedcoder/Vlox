@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="qW2J9AcWD8iz9MHhP6SgNZr2pBEpNRTT_WWMY3sUmVM" />
     <title>Vlox Light</title>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BJ6N9E07VY"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -12,7 +14,21 @@
         gtag('js', new Date());
         gtag('config', 'G-BJ6N9E07VY');
     </script>
-    <meta name="google-site-verification" content="qW2J9AcWD8iz9MHhP6SgNZr2pBEpNRTT_WWMY3sUmVM" />
+    <script type="importmap">
+        {
+            "imports": {
+                "axios": "https://cdn.jsdelivr.net/npm/axios@1.20.0/+esm",
+                "cash-dom": "https://cdn.jsdelivr.net/npm/cash-dom@8.1.0/dist/cash.esm.js",
+                "dompurify": "https://cdn.jsdelivr.net/npm/dompurify@3.4.8/+esm",
+                "file-saver": "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/+esm",
+                "marked": "https://cdn.jsdelivr.net/npm/marked@15.0.0/+esm",
+                "sweetalert2": "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm",
+                "validator": "https://cdn.jsdelivr.net/npm/validator@13.15.35/+esm",
+                "@shared/": "/shared/",
+                "@vlox/": "/js/"
+            }
+        }
+    </script>
 
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +66,9 @@
         <p>&copy; 2026 Vlox</p>
     </footer>
 
-    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        import "@vlox/main.js";
+    </script>
 </body>
 
 </html>

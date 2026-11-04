@@ -1,12 +1,12 @@
-import $ from "https://cdn.jsdelivr.net/npm/cash-dom@8.1.0/dist/cash.esm.js";
-import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
-import { marked } from "https://cdn.jsdelivr.net/npm/marked@15.0.0/+esm";
-import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.4.8/+esm";
-import axios from "https://cdn.jsdelivr.net/npm/axios@1.20.0/+esm";
-import saveAs from "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/+esm";
-import validator from "https://cdn.jsdelivr.net/npm/validator@13.15.35/+esm";
-import config from "/shared/config.js";
-import errors from "/shared/errors.js";
+import $ from "cash-dom";
+import Swal from "sweetalert2";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+import axios from "axios";
+import saveAs from "file-saver";
+import validator from "validator";
+import config from "@shared/config.js";
+import errors from "@shared/errors.js";
 
 export async function copy(str) {
     if (typeof str !== "string" || !str) return;

@@ -32,47 +32,23 @@ export async function generateRecoveryCodes(count = config.RECOVERY_CODE_COUNT) 
     }
 }
 
-export const postQueries = {
-    modify_post: (postId, userId) => {
-        return {
-            by: userId,
-            _id: postId
-        }
-    },
-
-    view_post: (postId, userId) => {
-        return {
-            _id: postId,
-            $or: [
-                { by: userId },
-                { private: false }
-            ]
-        }
-    }
-}
-
 export function createLimiter(
     windowMs = config.RATE_LIMIT_WINDOW_MS,
     limit = config.MAIN_RATE_LIMIT_MAX_REQ,
     options = {},
     error = errors.RATE_LIMITED()
 ) {
-    try {
-        return rateLimit({
-            windowMs: windowMs,
-            limit: limit,
-            message: {
-                status: 429,
-                error: error,
-            },
-            standardHeaders: true,
-            legacyHeaders: false,
-            ...options
-        });
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
+    return rateLimit({
+        windowMs: windowMs,
+        limit: limit,
+        message: {
+            status: 429,
+            error: error,
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+        ...options
+    });
 }
 
 export function validateResult(req, res, next) {

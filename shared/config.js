@@ -17,9 +17,7 @@ const config = {
     BIO_MIN_LENGTH: 5,
     BIO_MAX_LENGTH: 20,
     EMAIL_MAX_LENGTH: 100,
-    RECOVERY_CODE_LENGTH: 20,
 
-    
     // Others
     POSTS_LIMIT: 15,
     BOOKMARKS_LIMIT: 10,

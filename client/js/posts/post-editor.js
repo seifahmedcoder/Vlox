@@ -1,6 +1,6 @@
-import { config, $, Swal, validator } from "../utils.js";
-import templates from "../templates.js";
-import errors from "/shared/errors.js";
+import { config, $, Swal, validator } from "@vlox/utils.js";
+import templates from "@vlox/templates.js";
+import errors from "@shared/errors.js";
 
 export default class PostEditor {
     #instance;

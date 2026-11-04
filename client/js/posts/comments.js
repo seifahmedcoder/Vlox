@@ -1,5 +1,5 @@
-import templates from "../templates.js";
-import CommentEditor from "./comment-editor.js";
+import templates from "@vlox/templates.js";
+import CommentEditor from "@vlox/posts/comment-editor.js";
 import {
     sendRequest,
     capitalizeFirstLetter,
@@ -9,7 +9,7 @@ import {
     $,
     Alert,
     Swal
-} from "../utils.js";
+} from "@vlox/utils.js";
 
 async function getComments(state = {}) {
     return await sendRequest({

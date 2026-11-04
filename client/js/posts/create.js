@@ -1,6 +1,6 @@
-import { lockEvent, config, $, sendRequest, Alert } from "../utils.js";
-import { getPosts, postsState } from "./main-feed.js";
-import PostEditor from "./post-editor.js";
+import { lockEvent, config, $, sendRequest, Alert } from "@vlox/utils.js";
+import { getPosts, postsState } from "@vlox/posts/main-feed.js";
+import PostEditor from "@vlox/posts/post-editor.js";
 
 const createPostBtn = $("#create-post-btn");
 const postsNavigationContainer = $("#posts-navigation-container");
