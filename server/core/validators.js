@@ -33,8 +33,8 @@ const userValidator = () => [
 
     ...baseTextBody("password", "Password"),
     body("password")
-        .isLength({ max: config.PASSWORD_MAX_LENGTH })
-        .withMessage(errors.VALIDATION.MAX_LENGTH("Password", config.PASSWORD_MAX_LENGTH))
+        .isLength({ min: config.PASSWORD_MIN_LENGTH, max: config.PASSWORD_MAX_LENGTH })
+        .withMessage(errors.VALIDATION.LENGTH_RANGE("Password", config.PASSWORD_MIN_LENGTH, config.PASSWORD_MAX_LENGTH))
 ]
 
 const postValidator = () => [
@@ -60,7 +60,6 @@ const commentValidator = () => [
 export const createPostsValidator = [...postValidator(), validateResult]
 export const editPostsValidator = [mongoIdParam("id", "Post ID"), ...postValidator(), validateResult]
 export const getPostsValidator = [queryInt("skip", "Skip"), validateResult]
-export const changePostVisibilityValidator = [mongoIdParam("id", "Post ID"), booleanBody("value", "Visibility"), validateResult]
 export const getPostValidator = [mongoIdParam("id", "Post ID"), validateResult]
 
 // Comments
@@ -89,16 +88,12 @@ export const updateUserVisibilityValidator = [booleanBody("value", "Visibility")
 
 export const signupValidator = [
     ...userValidator(),
-    body("password")
-        .isLength({ min: config.PASSWORD_MIN_LENGTH })
-        .withMessage(errors.VALIDATION.MIN_LENGTH("Password", config.PASSWORD_MIN_LENGTH)),
+    ...baseTextBody("email", "Email"),
 
     ...baseTextBody("bio", "Bio"),
     body("bio")
         .isLength({ min: config.BIO_MIN_LENGTH, max: config.BIO_MAX_LENGTH })
         .withMessage(errors.VALIDATION.LENGTH_RANGE("Bio", config.BIO_MIN_LENGTH, config.BIO_MAX_LENGTH)),
-
-    ...baseTextBody("email", "Email"),
 
     body("email")
         .isLength({ max: config.EMAIL_MAX_LENGTH })

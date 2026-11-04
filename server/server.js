@@ -11,8 +11,7 @@ import postsRouter from "./controllers/posts.js";
 import authRouter from "./controllers/auth.js";
 import {
     checkAuth,
-    createLimiter,
-    postQueries
+    createLimiter
 } from "./core/utils.js";
 import {
     getPostValidator,
@@ -82,9 +81,7 @@ app.post("/api/v1/posts", checkAuth, createPostsValidator, async (req, res) => {
 
 app.get("/api/v1/posts/:id", checkAuth, getPostValidator, async (req, res) => {
     const id = req.cleanData.id;
-    const post = await schemas.Posts.findOne({
-        ...postQueries.view_post(id, req.session.userId)
-    })
+    const post = await schemas.Posts.findById(id)
         .populate("by", "-password -recoveryCodes -email")
         .lean();
 
@@ -94,9 +91,7 @@ app.get("/api/v1/posts/:id", checkAuth, getPostValidator, async (req, res) => {
 
 app.get("/api/v1/posts", getPostsValidator, async (req, res) => {
     const skip = req.cleanData.skip;
-    const posts = await schemas.Posts.find({
-        private: false
-    })
+    const posts = await schemas.Posts.find({})
         .sort({ createdAt: -1, _id: -1 })
         .skip(skip)
         .limit(config.POSTS_LIMIT)

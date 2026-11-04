@@ -1,4 +1,4 @@
-import PostEditor from "../posts/post-editor.js";
+import PostEditor from "@vlox/posts/post-editor.js";
 import {
     copy,
     renderSafeHtml,
@@ -8,12 +8,12 @@ import {
     capitalizeFirstLetter,
     lockEvent,
     Alert
-} from "../utils.js";
+} from "@vlox/utils.js";
 
 export async function getProfilePosts(userId, skip) {
     const response = await sendRequest({
         url: `/api/v1/users/${userId}/posts/?skip=${skip}`
-    });;
+    });
 
     return response;
 }
@@ -64,11 +64,6 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
 
         // Actions
         if (state.user.isLoggedInUser) {
-            $("<small>")
-                .css("color", "dimgray")
-                .html(`(Private): <span style='color: ${safePost.private ? "green" : "red"}'>${safePost.private ? "Yes" : "No"}</span>`)
-                .appendTo(card);
-
             const buttons = $("<div>").addClass("center-overflow");
             card.append(buttons);
 
@@ -108,22 +103,6 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
                 }))
                 .appendTo(buttons);
 
-            $("<button>")
-                .addClass("w-full")
-                .html(`<i class='fas fa-${safePost.private ? "eye" : "eye-slash"}'></i>`)
-                .on("click", lockEvent(async function () {
-                    const response = await sendRequest({
-                        url: `/api/v1/posts/${safePost._id}/visibility`,
-                        method: "PUT",
-                        body: { value: !safePost.private }
-                    });
-
-                    if (!response.success) return Alert.error({ text: response.error });
-                    if (!response.changed) return Alert.info({ text: "No changed were made!" });
-
-                    Alert.success({ text: `Post visibility set as ${safePost.private ? "public" : "private"}!` });
-                }))
-                .appendTo(buttons);
         }
     });
 

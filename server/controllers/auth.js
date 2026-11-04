@@ -81,13 +81,8 @@ router.get("/users/:id/profile", checkAuth, getUserProfileValidator, async funct
 
 router.get("/users/:id/posts", checkAuth, getUserPostsValidator, async function (req, res) {
     const { id, skip } = req.cleanData;
-    const posts = await schemas.Posts.find({
-        by: id,
-        $or: [
-            { by: req.session.userId },
-            { private: false }
-        ]
-    }).sort({ createdAt: -1, _id: -1 })
+    const posts = await schemas.Posts.find({ by: id })
+        .sort({ createdAt: -1, _id: -1 })
         .skip(skip)
         .limit(config.USER_POSTS_LIMIT)
         .populate("by", "-password -recoveryCodes -email")

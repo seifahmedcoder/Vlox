@@ -26,7 +26,7 @@ router.post("/bookmarks", checkAuth, getBookmarksValidator, async (req, res) => 
 
 router.post("/bookmarks/:id", checkAuth, getPostValidator, async (req, res) => {
     const id = req.cleanData.id;
-    const post = await schemas.Posts.findOne({ _id: id, private: false })
+    const post = await schemas.Posts.findById(id)
         .select("title")
         .lean();
 

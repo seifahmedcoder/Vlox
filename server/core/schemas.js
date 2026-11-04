@@ -31,7 +31,6 @@ const postsSchema = new mongoose.Schema({
     content: { type: String, trim: true, required: true, maxLength: config.POST_CONTENT_MAX_LENGTH },
     likes: { type: Number, default: 0, min: 0 },
     by: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-    private: { type: Boolean, default: false },
     redeemed: { type: Boolean, default: false }
 }, { timestamps: true });
 

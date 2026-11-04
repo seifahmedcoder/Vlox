@@ -1,10 +1,9 @@
 import schemas from "../core/schemas.js";
-import { checkAuth, ClientError, postQueries } from "../core/utils.js";
+import { checkAuth, ClientError } from "../core/utils.js";
 import errors from "../../shared/errors.js";
 import express from "express";
 import mongoose from "mongoose";
 import {
-    changePostVisibilityValidator,
     editPostsValidator,
     getPostValidator,
     commentsValidator,
@@ -13,59 +12,38 @@ import {
 } from "../core/validators.js";
 const router = express.Router();
 
-router.put("/posts/:id/visibility", checkAuth, changePostVisibilityValidator, async (req, res) => {
-    const { id, value } = req.cleanData;
-
-    const result = await schemas.Posts.updateOne(postQueries.modify_post(id, req.session.userId), [
-        {
-            $set: {
-                private: {
-                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$private", { $literal: value }]
-                },
-                updatedAt: {
-                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$updatedAt", "$$NOW"]
-                }
-            }
-        }
-    ], {
-        timestamps: false
-    });
-
-    if (result.matchedCount === 0) return res.status(404).json({ error: errors.NOT_FOUND("Post") });
-
-    return res.status(200).json({
-        changed: result.modifiedCount !== 0,
-        success: true
-    });
-});
-
 router.post("/posts/:id/like", checkAuth, getPostValidator, async (req, res) => {
     const session = await mongoose.startSession();
     const id = req.cleanData.id;
 
-    await session.withTransaction(async () => {
-        const result = await schemas.Posts.updateOne(postQueries.view_post(id, req.session.userId),
-            {
+    try {
+        await session.withTransaction(async () => {
+            const result = await schemas.Posts.findByIdAndUpdate(id, {
                 $inc: {
                     likes: 1
                 }
             }, {
-            session
+                session
+            });
+
+            if (result.matchedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
+
+            await schemas.Likes.create([{ by: req.session.userId, for: id }], { session });
         });
+    } finally {
+        await session.endSession();
+    }
 
-        if (result.matchedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
-
-        await schemas.Likes.create([{ by: req.session.userId, for: id }], { session });
-    });
-
-    await session.endSession();
     return res.status(201).json({ success: true });
 });
 
 router.put("/posts/:id/update", checkAuth, editPostsValidator, async (req, res) => {
     const { content, title, id } = req.cleanData;
 
-    const result = await schemas.Posts.updateOne(postQueries.modify_post(id, req.session.userId), [
+    const result = await schemas.Posts.updateOne({
+        _id: id,
+        by: req.session.userId
+    }, [
         {
             $set: {
                 title: {
@@ -101,7 +79,10 @@ router.delete("/posts/:id/delete", checkAuth, getPostValidator, async function (
 
     try {
         await session.withTransaction(async () => {
-            const result = await schemas.Posts.deleteOne(postQueries.modify_post(id, req.session.userId), { session });
+            const result = await schemas.Posts.deleteOne({
+                _id: id,
+                by: req.session.userId
+            }, { session });
             if (result.deletedCount === 0) throw new ClientError(errors.ACCESS_DENIED("post"), 404);
 
             // Not bad for small scale ;)
@@ -118,7 +99,7 @@ router.delete("/posts/:id/delete", checkAuth, getPostValidator, async function (
 
 router.post("/posts/:id/comments", checkAuth, commentsValidator, async (req, res) => {
     const { id, content } = req.cleanData;
-    const post = await schemas.Posts.exists(postQueries.view_post(id, req.session.userId));
+    const post = await schemas.Posts.exists({ _id: id });
     if (!post) return res.status(404).json({ error: errors.NOT_FOUND("Post") });
 
     await schemas.Comments.create({ content, for: id, by: req.session.userId });
