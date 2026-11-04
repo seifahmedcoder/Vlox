@@ -3,7 +3,7 @@ import templates from "@vlox/templates.js";
 import errors from "@shared/errors.js";
 import {
     sendRequest,
-    capitalizeFirstLetter,
+    capitalize,
     lockEvent,
     config,
     input,
@@ -50,7 +50,7 @@ async function renderBookmarks(state = {}, preFetchedResponse = null) {
         // Header
         $("<h2>")
             .addClass("overflow")
-            .text(capitalizeFirstLetter(safeBookmark.title) || "No title")
+            .text(capitalize(safeBookmark.title) || "No title")
             .appendTo(header);
 
         $("<i>")
@@ -109,9 +109,9 @@ async function renderBookmarks(state = {}, preFetchedResponse = null) {
                 });
 
                 if (!response.success) return Alert.error({ text: response.error });
-                if (!response.changed) return Alert.info({ text: "No changed were made!" });
+                if (!response.changed) return Alert.info({ text: "No changes were made!" });
 
-                Alert.success({ text: "Bookmark renamed successfully!" });
+                Alert.success({ text: "Bookmark renamed!" });
             }))
             .appendTo(buttons);
     });

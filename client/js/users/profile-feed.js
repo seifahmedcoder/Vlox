@@ -5,7 +5,7 @@ import {
     generatePostLink,
     sendRequest,
     $,
-    capitalizeFirstLetter,
+    capitalize,
     lockEvent,
     Alert
 } from "@vlox/utils.js";
@@ -45,7 +45,7 @@ export async function renderProfilePosts(state = {}, preFetchedResponse = null) 
         // Header
         $("<h2>")
             .addClass("overflow")
-            .text(capitalizeFirstLetter(safePost.title) || "Untitled post")
+            .text(capitalize(safePost.title) || "Untitled post")
             .appendTo(header);
 
         $("<i>")

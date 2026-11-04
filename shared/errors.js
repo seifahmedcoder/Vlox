@@ -1,11 +1,10 @@
-// This is a quick prototype guys. Working on a better error handling system for the future :)
 const isString = (str) => typeof str === "string" && str.trim();
 const getIntegersError = (fallback, ...nums) => nums?.every(Number.isInteger) ? null : fallback;
 const formatLabel = (template, label) =>
     (!isString(template) || !isString(label))
         ? "Please check your input and try again."
         : template.replace("{label}", label.trim());
-
+        
 export const errors = {
     INVALID_CREDENTIALS: () => "Invalid username or password.",
     INVALID_RECOVERY_CODE: () => "Invalid recovery code.",
@@ -14,7 +13,6 @@ export const errors = {
     SESSION_DESTROY_FAILED: () => "Failed to destroy session.",
     ACCOUNT_NOT_FOUND: () => "We can't find your account right now.",
     ACCOUNT_NOT_FOUND_FOR_USERNAME: () => "No account was found with that username.",
-    PROFILE_NOT_FOUND_OR_PRIVATE: () => "User not found, or their account is private.",
     PASSWORD_UPDATE_FAILED: () => "Failed to update password.",
     COPY_FAILED: () => "Failed to copy.",
     RATE_LIMITED: () => "Too many requests. Please try again later.",

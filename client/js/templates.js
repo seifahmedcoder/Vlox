@@ -54,10 +54,6 @@ const templates = {
     <p class="center-overflow"><b>Bio:</b> ${renderSafeHtml(state?.user?.bio, false) || "No bio found"}</p>
     ${state?.user?.isLoggedInUser ? '<i class="fas fa-pen-to-square icon-helper" id="profile-bio-edit-btn" role="button" tabindex="0"></i>' : ""}
   </div>
-  <div class="space-between">  
-    <p><b>Visibility:</b> ${state?.user?.private ? "Private" : "Public"}</p>
-    ${state?.user?.isLoggedInUser ? `<i class="fas fa-${state?.user?.private ? "eye" : "eye-slash"} icon-helper" id="profile-visibility-toggle-btn" role="button" tabindex="0"></i>` : ""}
-  </div>
   ${state?.user?.isLoggedInUser ? `
   <div class="center">
     <button id="profile-bookmarks-btn" class="w-full">

@@ -2,7 +2,7 @@ import templates from "@vlox/templates.js";
 import CommentEditor from "@vlox/posts/comment-editor.js";
 import {
     sendRequest,
-    capitalizeFirstLetter,
+    capitalize,
     lockEvent,
     config,
     quickInfo,
@@ -46,7 +46,7 @@ async function renderComments(state = {}, preFetchedResponse = null) {
 
         $("<h3>")
             .addClass("overflow")
-            .text(capitalizeFirstLetter(safeBy.username) || "User")
+            .text(capitalize(safeBy.username) || "User")
             .appendTo(header);
 
         if (safeBy?._id && safeBy._id === quickInfo?._id) {
@@ -70,7 +70,7 @@ async function renderComments(state = {}, preFetchedResponse = null) {
                     });
 
                     if (!response.success) return Alert.error({ text: response.error });
-                    if (!response.changed) return Alert.info({ text: "No changed were made!" });
+                    if (!response.changed) return Alert.info({ text: "No changes were made!" });
 
                     Alert.success({ text: "Comment updated!" });
                 }))

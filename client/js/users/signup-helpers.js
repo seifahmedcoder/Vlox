@@ -12,45 +12,40 @@ const loggedInGroup = $("#auth-buttons");
 const signUpBtn = $("#signup-btn");
 
 function validateUsername(username) {
-    const { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } = config;
+    const USERNAME_MIN_LENGTH = config.USERNAME_MIN_LENGTH;
 
     if (validator.isEmpty(username)) return errors.VALIDATION.REQUIRED("Username");
-    if (!validator.isLength(username, { min: USERNAME_MIN_LENGTH, max: USERNAME_MAX_LENGTH })) {
-        return errors.VALIDATION.LENGTH_RANGE("Username", USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH);
+    if (!validator.isLength(username, { min: USERNAME_MIN_LENGTH })) {
+        return errors.VALIDATION.MIN_LENGTH("Username", USERNAME_MIN_LENGTH);
     }
 
     return null;
 }
 
 function validatePassword(password) {
-    const { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } = config;
+    const PASSWORD_MIN_LENGTH = config.PASSWORD_MIN_LENGTH;
 
     if (validator.isEmpty(password)) return errors.VALIDATION.REQUIRED("Password");
-    if (!validator.isLength(password, { max: PASSWORD_MAX_LENGTH, min: PASSWORD_MIN_LENGTH })) {
-        return errors.VALIDATION.LENGTH_RANGE("Password", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
+    if (!validator.isLength(password, { min: PASSWORD_MIN_LENGTH })) {
+        return errors.VALIDATION.MIN_LENGTH("Password", PASSWORD_MIN_LENGTH);
     }
 
     return null;
 }
 
 function validateEmail(email) {
-    const EMAIL_MAX_LENGTH = config.EMAIL_MAX_LENGTH;
-
     if (validator.isEmpty(email)) return errors.VALIDATION.REQUIRED("Email");
-    if (!validator.isEmail(email)) return errors.VALIDATION.INVALID_FORMAT("Email");
-    if (!validator.isLength(email, { max: EMAIL_MAX_LENGTH })) {
-        return errors.VALIDATION.MAX_LENGTH("Email", EMAIL_MAX_LENGTH);
-    }
+    if (!validator.isEmail(email)) return errors.VALIDATION.INVALID_FORMAT("email");
 
     return null;
 }
 
 function validateBio(bio) {
-    const { BIO_MIN_LENGTH, BIO_MAX_LENGTH } = config;
+    const BIO_MIN_LENGTH = config.BIO_MIN_LENGTH;
 
     if (validator.isEmpty(bio)) return errors.VALIDATION.REQUIRED("Bio");
-    if (!validator.isLength(bio, { min: BIO_MIN_LENGTH, max: BIO_MAX_LENGTH })) {
-        return errors.VALIDATION.LENGTH_RANGE("Bio", BIO_MIN_LENGTH, BIO_MAX_LENGTH);
+    if (!validator.isLength(bio, { min: BIO_MIN_LENGTH })) {
+        return errors.VALIDATION.MIN_LENGTH("Bio", BIO_MIN_LENGTH);
     }
 
     return null;

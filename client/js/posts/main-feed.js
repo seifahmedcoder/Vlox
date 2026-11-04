@@ -3,7 +3,7 @@ import showComments from "@vlox/posts/comments.js";
 import CommentEditor from "@vlox/posts/comment-editor.js";
 import {
     sendRequest,
-    capitalizeFirstLetter,
+    capitalize,
     renderSafeHtml,
     generatePostLink,
     lockEvent,
@@ -44,7 +44,7 @@ export async function renderPosts(posts = []) {
         // Header
         $("<h2>")
             .addClass("overflow")
-            .text(capitalizeFirstLetter(safePost.title) || "No title found")
+            .text(capitalize(safePost.title) || "No title found")
             .appendTo(header);
 
         const icons = $("<div>").addClass("center");
@@ -83,7 +83,7 @@ export async function renderPosts(posts = []) {
             .css({ color: "red", cursor: "pointer" })
             .attr("role", "button")
             .attr("tabindex", "0")
-            .text(`Created by: ${capitalizeFirstLetter(safeBy.username) || "Someone"}`)
+            .text(`Created by: ${capitalize(safeBy.username) || "Someone"}`)
             .on("click", lockEvent(async function () {
                 await showProfile(safeBy._id);
             }))

@@ -18,7 +18,9 @@ router.post("/posts/:id/like", checkAuth, getPostValidator, async (req, res) => 
 
     try {
         await session.withTransaction(async () => {
-            const result = await schemas.Posts.findByIdAndUpdate(id, {
+            const result = await schemas.Posts.updateOne({
+                _id: id
+            }, {
                 $inc: {
                     likes: 1
                 }

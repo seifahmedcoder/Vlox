@@ -8,7 +8,6 @@ import {
     updateUserBioValidator,
     loginValidator,
     signupValidator,
-    updateUserVisibilityValidator,
     getUserProfileValidator,
     getUserPostsValidator
 } from "../core/validators.js";
@@ -19,7 +18,7 @@ const authRateLimiter = createLimiter(config.RATE_LIMIT_WINDOW_MS, config.AUTH_R
 router.post("/users/login", authRateLimiter, loginValidator, async (req, res) => {
     const { username, password } = req.cleanData;
 
-    const user = await schemas.Users.findOne({ username }).select("password");
+    const user = await schemas.Users.findOne({ username }).select("password").lean();
     if (!user) return res.status(401).json({ error: errors.INVALID_CREDENTIALS() });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -64,14 +63,8 @@ router.post("/users/signup", authRateLimiter, signupValidator, async (req, res) 
 
 router.get("/users/:id/profile", checkAuth, getUserProfileValidator, async function (req, res) {
     const id = req.cleanData.id;
-    const user = await schemas.Users.findOne({
-        _id: id,
-        $or: [
-            { _id: req.session.userId },
-            { private: false }
-        ]
-    })
-        .select("username bio private")
+    const user = await schemas.Users.findById(id)
+        .select("username bio")
         .lean();
 
     if (!user) return res.status(404).json({ error: errors.NOT_FOUND("User") });
@@ -89,35 +82,6 @@ router.get("/users/:id/posts", checkAuth, getUserPostsValidator, async function 
         .lean();
 
     return res.status(200).json({ success: true, posts });
-});
-
-router.put("/me/visibility", checkAuth, updateUserVisibilityValidator, async (req, res) => {
-    const value = req.cleanData.value;
-
-    const result = await schemas.Users.updateOne({
-        _id: req.session.userId
-    }, [
-        {
-            $set: {
-                private: {
-                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$private", { $literal: value }]
-                },
-
-                updatedAt: {
-                    $cond: [{ $eq: ["$private", { $literal: value }] }, "$updatedAt", "$$NOW"]
-                }
-            }
-        }
-    ], {
-        timestamps: false
-    });
-
-    if (result.matchedCount === 0) return res.status(404).json({ error: errors.NOT_FOUND("Account") });
-
-    return res.status(200).json({
-        changed: result.modifiedCount !== 0,
-        success: true
-    });
 });
 
 router.put("/me/bio", checkAuth, updateUserBioValidator, async (req, res) => {

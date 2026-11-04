@@ -4,7 +4,7 @@ import { renderProfilePosts } from "@vlox/users/profile-feed.js";
 import errors from "@shared/errors.js";
 import {
     sendRequest,
-    capitalizeFirstLetter,
+    capitalize,
     lockEvent,
     config,
     quickInfo,
@@ -28,9 +28,8 @@ export default async function showProfile(id) {
         skip: 0,
         container: null,
         user: {
-            username: capitalizeFirstLetter(user.username) || "User",
+            username: capitalize(user.username) || "User",
             bio: user.bio || "",
-            private: user.private || false,
             id: user._id,
             isLoggedInUser: user._id === quickInfo?._id
         }
@@ -75,18 +74,6 @@ export default async function showProfile(id) {
                 if (!response.success) return Alert.error({ text: response.error });
                 if (!response.changed) return Alert.info({ text: "No changed were made!" });
                 Alert.success({ text: "Bio updated!" });
-            }));
-
-            $popup.find("#profile-visibility-toggle-btn").on("click", lockEvent(async function () {
-                const response = await sendRequest({
-                    url: "/api/v1/me/visibility",
-                    method: "PUT",
-                    body: { value: !state.user.private }
-                });
-
-                if (!response.success) return Alert.error({ text: response.error });
-                if (!response.changed) return Alert.info({ text: "No changed were made!" });
-                Alert.success({ text: `Account is ${state.user.private ? "public" : "private"}` });
             }));
 
             $popup.find("#profile-load-posts-btn").on("click", lockEvent(async function () {

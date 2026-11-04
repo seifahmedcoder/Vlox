@@ -39,6 +39,11 @@ async function showLoginModal() {
         showCancelButton: true,
         confirmButtonText: "Submit",
         cancelButtonText: "Cancel",
+        didOpen: () => {
+            const $popup = $(Swal.getPopup());
+            $popup.find("#login-username").attr("maxLength", config.USERNAME_MAX_LENGTH);
+            $popup.find("#login-password").attr("maxLength", config.PASSWORD_MAX_LENGTH);
+        },
         preConfirm: () => {
             const $popup = $(Swal.getPopup());
             const username = $popup.find("#login-username").val().trim();
@@ -61,7 +66,7 @@ async function showLoginModal() {
     });
 
     if (!response.success) return Alert.error({ text: response.error });
-    await handleAuthSuccess("Successfully logged in!");
+    await handleAuthSuccess("Logged in successfully!");
 }
 
 async function showSignUpModal() {
@@ -69,10 +74,12 @@ async function showSignUpModal() {
         html: templates.USER_SIGNUP(),
         stopKeydownPropagation: false,
         showCancelButton: true,
-        confirmButtonText: "Submit",
-        cancelButtonText: "Cancel",
         didOpen: () => {
-            $(Swal.getPopup()).find("#signup-bio").attr("maxlength", config.BIO_MAX_LENGTH);
+            const $popup = $(Swal.getPopup());
+            $popup.find("#signup-username").attr("maxLength", config.USERNAME_MAX_LENGTH);
+            $popup.find("#signup-password").attr("maxLength", config.PASSWORD_MAX_LENGTH);
+            $popup.find("#signup-email").attr("maxLength", config.EMAIL_MAX_LENGTH);
+            $popup.find("#signup-bio").attr("maxLength", config.BIO_MAX_LENGTH);
         },
 
         preConfirm: () => {

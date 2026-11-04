@@ -13,7 +13,6 @@ const usersSchema = new mongoose.Schema({
         maxLength: config.EMAIL_MAX_LENGTH
     },
     recoveryCodes: { type: [String], default: [] },
-    private: { type: Boolean, default: false }
 }, { timestamps: true });
 
 usersSchema.index({ username: 1 }, { unique: true });

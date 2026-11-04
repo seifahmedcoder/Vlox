@@ -65,7 +65,7 @@ export async function sendRequest({ body, ...requestConfig }) {
     }
 }
 
-export function capitalizeFirstLetter(str) {
+export function capitalize(str) {
     if (typeof str !== "string" || !str) return "";
     return (str.charAt(0).toUpperCase() + str.slice(1)).trim();
 }

@@ -15,10 +15,6 @@ const queryInt = (field, label) => query(field)
     .exists().withMessage(errors.VALIDATION.REQUIRED(`${label} value`))
     .isInt({ min: 0 }).withMessage(errors.VALIDATION.NON_NEGATIVE_INTEGER(label));
 
-const booleanBody = (field, label) => body(field)
-    .exists().withMessage(errors.VALIDATION.REQUIRED(`${label} value`))
-    .isBoolean().withMessage(errors.VALIDATION.BOOLEAN(label));
-
 const mongoIdParam = (field, label) => param(field)
     .exists().withMessage(errors.VALIDATION.REQUIRED(label))
     .isMongoId().withMessage(errors.VALIDATION.INVALID_FORMAT(label));
@@ -84,7 +80,6 @@ export const renameBookmarkValidator = [
 export const loginValidator = [...userValidator(), validateResult]
 export const getUserProfileValidator = [mongoIdParam("id", "User ID"), validateResult]
 export const getUserPostsValidator = [queryInt("skip", "Skip"), mongoIdParam("id", "User ID"), validateResult]
-export const updateUserVisibilityValidator = [booleanBody("value", "Visibility"), validateResult]
 
 export const signupValidator = [
     ...userValidator(),
@@ -100,7 +95,7 @@ export const signupValidator = [
         .withMessage(errors.VALIDATION.MAX_LENGTH("Email", config.EMAIL_MAX_LENGTH)),
     body("email")
         .isEmail()
-        .withMessage(errors.VALIDATION.INVALID_FORMAT("Email")),
+        .withMessage(errors.VALIDATION.INVALID_FORMAT("email")),
     body("email").normalizeEmail(),
     validateResult
 ]

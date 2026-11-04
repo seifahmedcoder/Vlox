@@ -33,10 +33,6 @@ With Cash keeping the frontend lean and efficient, I successfully built Vlox as 
 
 Thanks to this architecture, the frontend is finally at a point where I can easily make updates without running into messy code.
 
-### Internationalization
-
-I'm still working on adding support for different languages. The current error-handling implementation is not complete; it's just a quick prototype and will change as I continue working on it, too.
-
 ## Live Demo
 
 If you have some time, please consider trying trying [Vlox](https://vlox-social-platform.abasthan.app). I really appreciate feedback from cool developer like you :)
