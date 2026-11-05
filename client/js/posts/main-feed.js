@@ -103,7 +103,7 @@ export async function renderPosts(posts = []) {
                 });
 
                 if (likesResponse.error) return Alert.error({ text: likesResponse.error });
-                
+
                 $(this).find(".likes-count").text(likes + 1);
                 Alert.success({ text: "Post liked!" });
             }))
@@ -147,7 +147,7 @@ export async function getPosts(postId = null) {
             `/api/v1/posts/${postId}` :
             `/api/v1/posts/?skip=${postsState.skip}`,
     });
-
+    
     if (!data.success) return Alert.error({ text: data.error });
     renderPosts(data.posts);
 }

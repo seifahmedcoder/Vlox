@@ -37,6 +37,6 @@ Thanks to this architecture, the frontend is finally at a point where I can easi
 
 If you have some time, please consider trying trying [Vlox](https://vlox-social-platform.abasthan.app). I really appreciate feedback from cool developer like you :)
 
-And so, if you agree with the idea, please keep in mind that it's still a work in progress! Features like proper error handling, password recovery, and the 'unlike' button aren't finished yet. Go easy on me!
+And so, if you agree with the idea, please keep in mind that it's still a work in progress! Features like clean error-handling, password recovery, and the 'unlike' button aren't finished yet. Go easy on me!
 
 *Please drop a 🌟! This means the 🌎 to me.*

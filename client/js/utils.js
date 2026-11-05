@@ -7,6 +7,7 @@ import saveAs from "file-saver";
 import validator from "validator";
 import config from "@shared/config.js";
 import errors from "@shared/errors.js";
+import Notiflix from "notiflix";
 
 export async function copy(str) {
     if (typeof str !== "string" || !str) return;
@@ -50,7 +51,9 @@ export function lockEvent(fn) {
     }
 }
 
-export async function sendRequest({ body, ...requestConfig }) {
+export async function sendRequest({ body, ...requestConfig }, showLoading = true) {
+    if (showLoading) Notiflix.Loading.standard("Working on it...");
+
     try {
         const response = await axios({
             ...requestConfig,
@@ -62,6 +65,8 @@ export async function sendRequest({ body, ...requestConfig }) {
         return response?.data || {};
     } catch (error) {
         return { error: error.response?.data?.error || errors.UNEXPECTED_ERROR() };
+    } finally {
+        if (showLoading) Notiflix.Loading.remove();
     }
 }
 
@@ -84,7 +89,7 @@ export let quickInfo = {};
 
 export async function initQuickInfo() {
     try {
-        const data = await sendRequest({ url: "/api/v1/me/quick-info" });
+        const data = await sendRequest({ url: "/api/v1/me/quick-info" }, false);
         Object.assign(quickInfo, data || {});
     } catch {
         Alert.error({ text: errors.UNEXPECTED_ERROR() });

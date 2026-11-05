@@ -1,3 +1,5 @@
+// Working to improve this module :|
+
 const isString = (str) => typeof str === "string" && str.trim();
 const getIntegersError = (fallback, ...nums) => nums?.every(Number.isInteger) ? null : fallback;
 const formatLabel = (template, label) =>

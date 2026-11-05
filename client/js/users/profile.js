@@ -72,7 +72,7 @@ export default async function showProfile(id) {
                 });
 
                 if (!response.success) return Alert.error({ text: response.error });
-                if (!response.changed) return Alert.info({ text: "No changed were made!" });
+                if (!response.changed) return Alert.info({ text: "No changes were made!" });
                 Alert.success({ text: "Bio updated!" });
             }));
 
